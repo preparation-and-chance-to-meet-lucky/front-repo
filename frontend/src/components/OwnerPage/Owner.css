@@ -49,23 +49,25 @@
 }
 
 .profile-details {
+  width: 75%;
   font-size: 18px;
 }
 
 .profile-name {
-  margin-left: 50px;
+  margin-right: auto;
   margin-top: -50px;
 }
 
 .bio {
   font-size: 14px;
-  margin-left: 50px;
+  margin-right: auto;
   margin-top: -10px;
   color: gray;
 }
 
 .playlist-container {
   display: flex;
+  height: 400px;
   gap: 20px;
   overflow-x: auto; /* 가로 스크롤을 허용하여 넘치면 스크롤 */
   background: linear-gradient(to right, #C8D5E3, #F6E3E7, #F5E8F1);
@@ -111,4 +113,54 @@
 .add-icon {
   font-size: 50px;
   color: #555;
+}
+
+.owner-container {
+  padding: 20px;
+}
+
+
+.profile-section {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.profile-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.edit{
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+  height: 20px;
+  align-items: center;
+  border-radius: 5px;
+  border: px solid #C9BAD3;
+}
+
+.edit-button {
+background-color: #A9A9C6;
+color: white;
+border: none;
+border-radius: 5px;
+padding:5px 10px; 
+cursor: pointer;
+margin-top: 20px;
+margin-left:auto;
+}
+
+.profile-edit {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.description {
+  margin-top: 10px;
 }

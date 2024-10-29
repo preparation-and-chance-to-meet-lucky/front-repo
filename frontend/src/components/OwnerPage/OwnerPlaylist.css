@@ -55,15 +55,35 @@
   margin-left: 50px;
 }
 
+.profile-edit {
+  display: flex; /* 아이콘과 텍스트를 가로로 정렬 */
+  align-items: center; /* 수직 정렬을 중앙으로 설정 */
+}
+
+.profile-edit-button{
+  display: inline;
+  background-color: #A9A9C6;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px; 
+}
+
+.edit{
+    display: flex;
+    flex-direction: column;
+    margin-left:auto;
+}
+
 .edit-button {
   background-color: #A9A9C6;
   color: white;
   border: none;
   border-radius: 5px;
-  padding: 10px 15px;
-  margin-left: 900px;
+  padding: 10px 20px; 
+  margin-left:auto;
   cursor: pointer;
-  margin-top: 20px;
+  margin-top: -20px;
 }
 
 .edit-button:hover {

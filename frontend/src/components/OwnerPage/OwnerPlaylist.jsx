@@ -4,7 +4,6 @@ import './Owner.css'
 import api from '../../api/api';
 import Pin from '../../asset/pin1.png';
 import { FaUserGear, FaRegCirclePlay } from "react-icons/fa6";
-import { MdOutlineModeEdit } from "react-icons/md";
 
 function OwnerPlaylist() {
   const [pinNumber, setPinNumber] = useState('');
@@ -12,7 +11,7 @@ function OwnerPlaylist() {
   const [isEditing, setIsEditing] = useState(false);
   const [isProfileEditing, setIsProfileEditing] = useState(false);
   const [profileName, setProfileName] = useState('사용자 이름');
-  const [playlist, setPlaylist] = useState({ title: '', id: '', isEditable: false }); // playlist 상태 추가
+  const [playlist, setPlaylist] = useState({ title: '', id: '', isEditable: false }); 
   const [editedTitle, setEditedTitle] = useState('');
 
   const songs = [

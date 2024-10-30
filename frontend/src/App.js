@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Owner from './components/OwnerPage/Owner';
-import OwnerPlaylist from './components/OwnerPage/OwnerPlaylist';
+import Owner from './pages/OwnerPage/Owner';
+import OwnerPlaylist from './pages/OwnerPage/Owner';
 
 const App = () => {
   return (

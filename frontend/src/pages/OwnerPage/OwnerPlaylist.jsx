@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import './OwnerPlaylist.css'; 
-import './Owner.css'
+import '../../styles/OwnerPlaylist.css'; 
+import '.../../styles/Owner.css';
 import api from '../../api/api';
-import Pin from '../../asset/pin1.png';
 import { FaUserGear, FaRegCirclePlay } from "react-icons/fa6";
 
 function OwnerPlaylist() {
@@ -17,6 +16,7 @@ function OwnerPlaylist() {
   const songs = [
     { id: 1, title: '아 진짜 너무 졸리다', artist: '이지은 망명', likes: 1500 },
     { id: 2, title: '피곤해용 힘들어요', artist: '이지은 영혼', likes: 2 },
+    { id: 3, title: '리액트 못하겠어요', artist: '박은산 영혼', likes: 20000 },
     // ... 추가 노래 데이터
   ];
 
@@ -117,6 +117,7 @@ function OwnerPlaylist() {
 
   return (
     <div className="header">
+      {/* <Header/> */}
       <div className="header-container">
         <h1 className="logo">
           SoundP<span className="pinLogoContainer"><img className="pinLogo" src={Pin} alt="pinLogo" /></span>n
@@ -129,41 +130,58 @@ function OwnerPlaylist() {
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
         />
-        <FaUserGear style={{ fontSize: '30px', cursor: 'pointer' }} />
+        <FaUserGear style={{ fontSize: '30px', cursor: 'pointer' }} onClick={handleIconClick} />
       </div>
-
       <div className="ownerPlaylistContainer">
-        <div className="playlist-header">
-          <FaRegCirclePlay style={{ fontSize: '40px', marginLeft: '50px', marginTop: '50px' }} />
-          <h1 className="playlistName">{playlist.title}</h1>
 
+        <div className="playlistTitle">
+          <div className='playlistHead'>
+            <FaRegCirclePlay style={{ fontSize: '40px', marginTop: '13px' }} />
+            <h1 className="playlistName">플레이리스트 이름</h1> {/* {playlist.title} */}
+          </div>
 
-          
-          {isEditing ? (
-            <>
-              <div className='edit'>
-              <button className="edit-button" onClick={handleSave}>저장</button>
-              <button className="edit-button" onClick={handleCancel}>취소</button>
-              </div>
-            </>
-          ) : (
-            <button className="edit-button" onClick={toggleEdit}>
-              재생목록 편집
-            </button>
-          )}
-        </div>
-
-
-
-        <div className="playlist-info">
           <div className="playlist-cover">
             <img src="https://via.placeholder.com/150" alt="Playlist Cover" />
-            <div className="playlist-title">{playlist.title}</div>
             <div className="playlist-description">
               아이유, 태연, 볼빨간사춘기, 백예린, 약동무지개, 윤하 ...
             </div>
           </div>
 
+          <div className="ChangeBtn">
+            {isProfileEditing ? (
+              <>
+                <input
+                  type="text"
+                  value={profileName}
+                  onChange={(e) => setProfileName(e.target.value)}
+                  placeholder="프로필 이름 입력"
+                />
+                <div className='row'>
+                  <button className="edit-button" onClick={handleProfileSave}>저장</button>
+                  <button className="edit-button" onClick={handleProfileCancel}>취소</button>
+                </div>
+              </>
+            ) : (
+              <button className="edit-button" onClick={toggleProfileEdit}>수정하기</button>
+            )}
+          </div>
+        </div>
+
+        <div className="columns">
+          {/* 재생목록 수정버튼 */}
+          <div className="profile-edit">
+            {isEditing ? (
+              <div className='row'>
+                <button className="edit-button" onClick={handleSave}>저장</button>
+                <button className="edit-button" onClick={handleCancel}>취소</button>
+              </div>
+            ) : (
+              <button className="edit-button" onClick={toggleEdit}>
+                재생목록 편집
+              </button>
+            )}
+          </div>
+          {/* 재생목록 */}
           <table className="songs-table">
             <thead>
               <tr>
@@ -198,25 +216,6 @@ function OwnerPlaylist() {
               ))}
             </tbody>
           </table>
-        </div>
-
-        <div className="profile-edit">
-          {isProfileEditing ? (
-            <>
-              <input
-                type="text"
-                value={profileName}
-                onChange={(e) => setProfileName(e.target.value)}
-                placeholder="프로필 이름 입력"
-              />
-             <div className='edit'>
-              <button className="edit-button" onClick={handleProfileSave}>저장</button>
-              <button className="edit-button" onClick={handleProfileCancel}>취소</button>
-             </div>
-            </>
-          ) : (
-            <button className="profile-edit-button" onClick={toggleProfileEdit}>수정하기</button>
-          )}
         </div>
       </div>
     </div>

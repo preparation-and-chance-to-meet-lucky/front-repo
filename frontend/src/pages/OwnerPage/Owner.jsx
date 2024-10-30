@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
+import Header from '../../components/Header';
 import api from '../../api/api';
-import './Owner.css';
+import '../../styles/Owner.css';
 import YouTube from "react-youtube";
-import Pin from '../../asset/pin1.png';
-import Me from '../../asset/Me.png';
+import Pin from "../../assets/pin1.png"
+import Me from '../../assets/Me.png';
 import { FaUserGear } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
+
 
 function Owner() {
   const options = {
@@ -86,6 +88,7 @@ function Owner() {
 
   return (
     <div className="header">
+      {/* <Header /> */}
       <div className="header-container">
         <h1 className="logo">
           SoundP<span className="pinLogoContainer"><img className="pinLogo" src={Pin} alt="pinLogo" /></span>n
@@ -100,30 +103,31 @@ function Owner() {
         />
         <FaUserGear style={{ fontSize: '30px', cursor: 'pointer' }} onClick={handleIconClick} />
       </div>
-
       <div className="profile-container">
         <img className="profile-image" src={Me} alt="Profile" />
-        <div className="profile-details">
-          <div className="profile-edit">
+        {/* <div className="profile-details"> */}
+          <div className="profile-column">
             {isEditing ? (
-              <>
+              <div className="profile-edit">
                 <input
                   type="text"
                   value={editedName}
                   onChange={(e) => setEditedName(e.target.value)}
                   className="edit"
                 />
-                <button className="edit-button" onClick={handleSave}>저장</button>
-                <button className="edit-button" onClick={handleCancel}>취소</button>
-              </>
+                <div className='row'>
+                <button className="edit-button" onClick={handleCancel}>저장</button>
+                <button className="edit-button" onClick={handleSave}>취소</button>
+                </div>
+              </div>
             ) : (
-              <>
+              <div className="profile-edit">
                 <h2 className="profile-name">{profileName}</h2>
                 <p className="bio">{description}</p>
                 <button className="edit-button" onClick={toggleEdit}>수정</button>
-              </>
+              </div>
             )}
-          </div>
+          {/* </div> */}
         </div>
       </div>
 

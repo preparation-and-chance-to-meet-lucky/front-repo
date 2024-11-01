@@ -122,7 +122,6 @@
 .songs-table {
   width: 100%;
   border-collapse: collapse;
-
 }
 
 .songs-table th, .songs-table td {
@@ -131,9 +130,15 @@
   color:gray
 }
 
-.songs-table td input[type="checkbox"] {
+.songs-table td input[type="checkbox"] {  
   margin-right: 5px;
 }
+
+.songs-table-container {
+  max-height: 42.5rem; /* 원하는 높이 설정 */
+  overflow-y: auto;
+}
+
 
 .check{
   background-color: #F5E8F1;

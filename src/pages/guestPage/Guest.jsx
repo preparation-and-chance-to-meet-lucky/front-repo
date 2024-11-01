@@ -26,6 +26,7 @@ function Guest() {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -41,7 +42,6 @@ function Guest() {
 
     if (pin) {
       setPinNumber(pin);
-      setUserInfo((prev) => ({ ...prev, pin: pin }));
 
       // 서버에 pin 값을 포함한 요청 보내기
       axios
@@ -58,13 +58,21 @@ function Guest() {
           const songsData = songsResponse.data.dataList || [];
           setSongs(songsData);
           setIsLoaded(true); // 데이터 로드 완료 후 상태 업데이트
+
+          // user 정보 가져오기
+          return axios.get(`http://3.36.76.110:8080/api/user/getby/${pin}`);
+        })
+        .then((userResponse) => {
+          const userData = userResponse.data || {};
+          setUserInfo({ username: userData.data.username, pin: pin });
+          console.log(userData.data.username);
         })
         .catch((error) => {
           console.error("데이터 로딩 오류:", error);
           setIsLoaded(false);
         });
     }
-  }, [location.search]);
+  }, [location.search, refresh]);
 
   const handleSongSelection = (id) => {
     if (selectedSongs.includes(id)) {
@@ -111,7 +119,11 @@ function Guest() {
         className="modal"
         overlayClassName="modal-overlay"
       >
-        <AddMusic closeModal={closeModal} />
+        <AddMusic
+          closeModal={closeModal}
+          playlistId={playlist.playlistId}
+          setRefresh={setRefresh}
+        />
       </Modal>
       {isLoaded ? (
         <div className="header-container">
@@ -223,48 +235,52 @@ function Guest() {
                 </div>
               </>
             </div>
-            <table className="songs-table">
-              <thead>
-                <tr>
-                  <th>
-                    <input
-                      className="check"
-                      type="checkbox"
-                      onChange={handleSelectAll}
-                      checked={selectedSongs.length === songs.length}
-                    />
-                  </th>
-                  <th>Title</th>
-                  <th>Channel</th>
-                  <th>Like</th>
-                </tr>
-              </thead>
-              <tbody>
-                {songs.length > 0 ? (
-                  songs.map((song) => (
-                    <tr key={song.playlistItemId}>
-                      <td>
-                        <input
-                          type="checkbox"
-                          checked={selectedSongs.includes(song.playlistItemId)}
-                          onChange={() =>
-                            handleSongSelection(song.playlistItemId)
-                          }
-                          disabled={!isEditing}
-                        />
-                      </td>
-                      <td>{song.videoTitle}</td>
-                      <td>{song.videoOwnerChannelTitle}</td>
-                      <td>♡{song.like}</td>
-                    </tr>
-                  ))
-                ) : (
+            <div className="songs-table-container">
+              <table className="songs-table">
+                <thead>
                   <tr>
-                    <td colSpan="4">No songs available</td>
+                    <th>
+                      <input
+                        className="check"
+                        type="checkbox"
+                        onChange={handleSelectAll}
+                        checked={selectedSongs.length === songs.length}
+                      />
+                    </th>
+                    <th>Title</th>
+                    <th>Channel</th>
+                    <th>Like</th>
                   </tr>
-                )}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {songs.length > 0 ? (
+                    songs.map((song) => (
+                      <tr key={song.playlistItemId}>
+                        <td>
+                          <input
+                            type="checkbox"
+                            checked={selectedSongs.includes(
+                              song.playlistItemId
+                            )}
+                            onChange={() =>
+                              handleSongSelection(song.playlistItemId)
+                            }
+                            disabled={!isEditing}
+                          />
+                        </td>
+                        <td>{song.videoTitle}</td>
+                        <td>{song.videoOwnerChannelTitle}</td>
+                        <td>♡{song.like}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="4">No songs available</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}

@@ -6,14 +6,12 @@ import { AiOutlineClose } from "react-icons/ai"; // X 아이콘 import
 import "react-toastify/dist/ReactToastify.css";
 import "styles/login.css";
 
-function AddMusic({ closeModal }) {
+function AddMusic({ closeModal, playlistId, setRefresh }) {
   const [username, setUsername] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [position, setPosition] = useState(1);
-  const [playlistId, setPlaylistId] = useState(
-    "PLCnwzD94RuGCzkz-_VKsDK1KJ8ecc3U7L"
-  );
+  const [id, setId] = useState(playlistId);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,7 +20,6 @@ function AddMusic({ closeModal }) {
       setUsername(savedUsername);
       setRememberMe(true);
     }
-    
 
     // console.log("len", localStorage.getItem("len"));
     // const pos = Number(localStorage.getItem("len")) || 1;
@@ -118,8 +115,9 @@ function AddMusic({ closeModal }) {
           <button
             onClick={(event) => {
               event.preventDefault();
-              addPlaylistItem(videoUrl, playlistId, position - 1);
+              addPlaylistItem(videoUrl, id, position - 1);
               closeModal();
+              setRefresh((prev) => !prev);
             }}
             className="loginButton"
           >

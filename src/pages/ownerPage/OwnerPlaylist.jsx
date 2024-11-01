@@ -18,51 +18,75 @@ function OwnerPlaylist() {
   const [songs, setSongs] = useState([]); 
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
-  //플레이리스트 데이터를 API로부터 가져오는 함수
-  useEffect(() => {
-    let config = {
-      method: "get",
-      maxBodyLength: Infinity,
-      url: "http://3.36.76.110:8080/api/playlistItems/5",
-      headers: {},
-    };
+//플레이리스트 데이터를 API로부터 가져오는 함수
+useEffect(() => {
+  let config = {
+    method: "get",
+    maxBodyLength: Infinity,
+    url: "http://3.36.76.110:8080/api/playlistItems/5",
+    headers: {},
+  };
 
-    axios
-      .request(config)
-      .then((response) => {
-        console.log(JSON.stringify(response.data));
+  axios
+    .request(config)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+      const playlistName = response.data.dataList;
+      if (Array.isArray(playlistName)) {
+        setSongs(playlistName);
+      } else {
+        console.error("응답 데이터가 배열이 아닙니다:", playlistName);
+        setSongs([]);
+      }
+    })
+    .catch((error) => {
+      console.log("API 호출 중 오류 발생:", error);
+    });
 
-        // 응답 데이터에서 dataList 배열을 가져오기
-        const playlistName = response.data.dataList;
-        if (Array.isArray(playlistName)) {
-          setSongs(playlistName);
-        } else {
-          console.error("응답 데이터가 배열이 아닙니다:", playlistName);
-          setSongs([]); // 배열이 아닌 경우 빈 배열로 초기화
-        }
-      })
-      .catch((error) => {
-        console.log("API 호출 중 오류 발생:", error);
-      });
+  let config_playlist = {
+    method: "get",
+    maxBodyLength: Infinity,
+    url: "http://3.36.76.110:8080/api/playlists/5",
+    headers: {},
+  };
 
-    let config_playlist = {
-      method: "get",
-      maxBodyLength: Infinity,
-      url: "http://3.36.76.110:8080/api/playlists/5",
-      headers: {},
-    };
+  axios
+    .request(config_playlist)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+      setPlaylist(response.data.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}, []);
 
-    axios
-      .request(config_playlist)
-      .then((response) => {
-        console.log(JSON.stringify(response.data));
-        setPlaylist(response.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+// 좋아요 수를 업데이트하는 함수
+const handleLike = (songId) => {
+  // 로컬 상태에서 좋아요 수 업데이트
+  const updatedSongs = songs.map((song) => {
+    if (song.playlistItemId === songId) {
+      return { ...song, like: song.like + 1 };
+    }
+    return song;
+  });
+  setSongs(updatedSongs);
 
+  let config = {
+    method: 'patch',
+    maxBodyLength: Infinity,
+    url: 'http://3.36.76.110:8080/api/playlistItems/likes/${songId}',
+    headers: { }
+  };
+  
+  axios.request(config)
+  .then((response) => {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+  };
   
   // 플레이리스트 제목을 업데이트하는 함수
   const updatePlaylistTitle = () => {
@@ -311,7 +335,9 @@ function OwnerPlaylist() {
                   </td>
                   <td>{song.videoTitle}</td>
                   <td>{song.videoOwnerChannelTitle}</td>
-                  <td>♡{song.like}</td>
+                  <td>{song.like}
+                    <button className ="heartBtn" onClick={() => handleLike(song.playlistItemId)}>♡</button>
+                  </td>
                 </tr>
               ))}
             </tbody>
